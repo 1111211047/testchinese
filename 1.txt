@@ -1,0 +1,42 @@
+import requests
+from bs4 import BeautifulSoup
+word = input('請輸入中文字:')
+def read(word):
+    url = f'https://dict.concised.moe.edu.tw/search.jsp?md=1&word={word}#searchL'
+    html = requests.get(url)
+    bs = BeautifulSoup(html.text, 'lxml')
+    data = bs.find('table', id='searchL')
+    
+    try:
+        row = data.find_all('tr')[2]
+        chinese = row.find('td').text.strip()
+        phones = row.find_all('code')
+        pronunciation = " ".join(e.text.strip() for e in phones)
+        return chinese, pronunciation
+    except (AttributeError, IndexError):
+        # Handle cases where the word or pronunciation data is not found
+        return None, None
+    except Exception as e:
+        # Handle any other unexpected exceptions
+        print(f"An error occurred: {e}")
+        return None, None
+
+def generate_sentence(word):
+    sentence_templates = [
+        f"{word}是一個常見的漢字。",
+        f"我正在學習如何寫{word}。",
+        f"{word}字有很多不同的用法。",
+        f"小明在作文中用了很多次{word}這個字。",
+        f"請你告訴我{word}的意思。"
+    ]
+    return sentence_templates
+
+chinese, pronunciation = get_word_info(word)
+
+if chinese:
+    sentences = generate_sentence(word)
+    for sentence in sentences:
+        print(f"造句=>{sentence}")
+else:
+    print('查無此字')
+#read('國小')
