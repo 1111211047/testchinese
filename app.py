@@ -14,7 +14,6 @@
 
 import phonetic as ph
 import os
-import multiplication_table import multiplication_table
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
