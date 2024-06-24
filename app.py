@@ -14,7 +14,7 @@
 
 
 import os
-import sys
+import multiplication_table import multiplication_table
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
